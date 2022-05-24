@@ -18,7 +18,7 @@ We recommand users to run this package in Ubuntu 18.04 and ROS2 eloquent environ
 # Configuration
 First, creat a directory.
 ```
-mkdir ~/ros2_ws/src
+mkdir -p ~/ros2_ws/src
 ```
 Then download this package into this `~/ros_ws/src` folder. 
 
