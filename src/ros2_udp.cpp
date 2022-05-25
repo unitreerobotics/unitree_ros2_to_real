@@ -6,6 +6,29 @@
 #include "unitree_legged_sdk/unitree_legged_sdk.h"
 #include "convert.h"
 
+using namespace UNITREE_LEGGED_SDK;
+class Custom
+{
+public:
+    UDP low_udp;
+    UDP high_udp;
+
+    HighCmd high_cmd = {0};
+    HighState high_state = {0};
+
+    LowCmd low_cmd = {0};
+    LowState low_state = {0};
+
+public:
+    Custom()
+        : low_udp(LOWLEVEL),
+          high_udp(8090, "192.168.123.161", 8082, sizeof(HighCmd), sizeof(HighState))
+    {
+        high_udp.InitCmdData(high_cmd);
+        low_udp.InitCmdData(low_cmd);
+    }
+};
+
 Custom custom;
 
 rclcpp::Subscription<ros2_unitree_legged_msgs::msg::HighCmd>::SharedPtr sub_high;
@@ -21,15 +44,17 @@ void highCmdCallback(const ros2_unitree_legged_msgs::msg::HighCmd::SharedPtr msg
 {
     printf("highCmdCallback is running !\t%ld\n", ::high_count);
 
-    custom.cmdAssignment(msg);
+    custom.high_cmd = rosMsg2Cmd(msg);
 
-    custom.highUdpSend();
+    custom.high_udp.SetSend(custom.high_cmd);
+    custom.high_udp.Send();
 
     ros2_unitree_legged_msgs::msg::HighState high_state_ros;
 
-    custom.highUdpRecv();
+    custom.high_udp.Recv();
+    custom.high_udp.GetRecv(custom.high_state);
 
-    custom.stateAssignment(high_state_ros);
+    high_state_ros = state2rosMsg(custom.high_state);
 
     pub_high->publish(high_state_ros);
 
@@ -41,15 +66,17 @@ void lowCmdCallback(const ros2_unitree_legged_msgs::msg::LowCmd::SharedPtr msg)
 
     printf("lowCmdCallback is running !\t%ld\n", low_count);
 
-    custom.cmdAssignment(msg);
+    custom.low_cmd = rosMsg2Cmd(msg);
 
-    custom.lowUdpSend();
+    custom.low_udp.SetSend(custom.low_cmd);
+    custom.low_udp.Send();
 
     ros2_unitree_legged_msgs::msg::LowState low_state_ros;
 
-    custom.lowUdpRecv();
+    custom.low_udp.Recv();
+    custom.low_udp.GetRecv(custom.low_state);
 
-    custom.stateAssignment(low_state_ros);
+    low_state_ros = state2rosMsg(custom.low_state);
 
     pub_low->publish(low_state_ros);
 

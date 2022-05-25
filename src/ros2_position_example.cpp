@@ -72,8 +72,6 @@ int main(int argc, char **argv)
             low_cmd_ros.motor_cmd[FR_1].kd = 1.0;
         }
 
-        rclcpp::spin_some(node);
-
         count++;
         if (count > 10)
         {
@@ -82,6 +80,8 @@ int main(int argc, char **argv)
         }
 
         pub->publish(low_cmd_ros);
+
+        rclcpp::spin_some(node);
 
         loop_rate.sleep();
     }
