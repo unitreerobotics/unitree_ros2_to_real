@@ -29,6 +29,10 @@ include_directories(
 
 link_directories(${CMAKE_SOURCE_DIR}/unitree_legged_sdk-master/lib)
 
+add_executable(ros2_twist_sub src/ros2_twist_sub.cpp)
+target_link_libraries(ros2_twist_sub ${EXTRA_LIBS})
+ament_target_dependencies(ros2_twist_sub rclcpp ros2_unitree_legged_msgs)
+
 add_executable(ros2_udp src/ros2_udp.cpp)
 target_link_libraries(ros2_udp ${EXTRA_LIBS})
 ament_target_dependencies(ros2_udp rclcpp ros2_unitree_legged_msgs)
@@ -42,6 +46,7 @@ target_link_libraries(ros2_position_example ${EXTRA_LIBS})
 ament_target_dependencies(ros2_position_example rclcpp ros2_unitree_legged_msgs)
 
 install(TARGETS
+    ros2_twist_sub
     ros2_udp
     ros2_walk_example
     ros2_position_example
