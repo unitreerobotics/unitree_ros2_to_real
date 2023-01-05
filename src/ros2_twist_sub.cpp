@@ -113,7 +113,7 @@ int main(int argc, char **argv)
 
     auto node = rclcpp::Node::make_shared("node_ros2_twist_sub");
 
-//    sub_cmd_vel = node->create_subscription("cmd_vel", 1, cmdVelCallback);
+    sub_cmd_vel = node->create_subscription<geometry_msgs::msg::Twist>("cmd_vel", 1, cmdVelCallback);
 
     if (strcasecmp(argv[1], "LOWLEVEL") == 0)
     {
