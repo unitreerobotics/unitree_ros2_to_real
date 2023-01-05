@@ -88,17 +88,16 @@ void lowCmdCallback(const ros2_unitree_legged_msgs::msg::LowCmd::SharedPtr msg)
 }
 
 void cmdVelCallback(const geometry_msgs::msg::Twist::ConstPtr msg)
-//void cmdVelCallback()
 {
     printf("cmdVelCallback is running!\t%ld\n", cmd_vel_count);
 
     custom.high_cmd = rosMsg2Cmd(msg);
 
-/*
+
     printf("cmd_x_vel = %f\n", custom.high_cmd.velocity[0]);
     printf("cmd_y_vel = %f\n", custom.high_cmd.velocity[1]);
     printf("cmd_yaw_vel = %f\n", custom.high_cmd.yawSpeed);
-*/
+
     ros2_unitree_legged_msgs::msg::HighState high_state_ros;
 
     high_state_ros = state2rosMsg(custom.high_state);
