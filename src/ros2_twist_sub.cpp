@@ -7,6 +7,8 @@
 #include "convert.h"
 #include "geometry_msgs/msg/twist.hpp"
 
+using Twist = geometry_msgs::msg::Twist;
+
 using namespace UNITREE_LEGGED_SDK;
 class Custom
 {
@@ -38,7 +40,7 @@ rclcpp::Subscription<ros2_unitree_legged_msgs::msg::LowCmd>::SharedPtr sub_low;
 rclcpp::Publisher<ros2_unitree_legged_msgs::msg::HighState>::SharedPtr pub_high;
 rclcpp::Publisher<ros2_unitree_legged_msgs::msg::LowState>::SharedPtr pub_low;
 
-rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr sub_cmd_vel;
+rclcpp::Subscription<Twist>::SharedPtr sub_cmd_vel;
 
 long high_count = 0;
 long low_count = 0;
@@ -87,7 +89,7 @@ void lowCmdCallback(const ros2_unitree_legged_msgs::msg::LowCmd::SharedPtr msg)
     printf("lowCmdCallback ending!\t%ld\n\n", ::low_count++);
 }
 
-void cmdVelCallback(const geometry_msgs::msg::Twist::ConstPtr msg)
+void cmdVelCallback(const Twist::SharedPtr msg)
 {
     printf("cmdVelCallback is running!\t%ld\n", cmd_vel_count);
 
@@ -112,8 +114,7 @@ int main(int argc, char **argv)
     rclcpp::init(argc, argv);
 
     auto node = rclcpp::Node::make_shared("node_ros2_twist_sub");
-
-    sub_cmd_vel = node->create_subscription<geometry_msgs::msg::Twist>("cmd_vel", 1, cmdVelCallback);
+    sub_cmd_vel = node->create_subscription<Twist>("cmd_vel", 1, cmdVelCallback);
 
     if (strcasecmp(argv[1], "LOWLEVEL") == 0)
     {
