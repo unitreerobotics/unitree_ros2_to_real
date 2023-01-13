@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
         high_cmd_ros.head[0] = 0xFE;
         high_cmd_ros.head[1] = 0xEF;
-        high_cmd_ros.level_flag = HIGHLEVEL;
+        high_cmd_ros.level_flag = 0;
         high_cmd_ros.mode = 0;
         high_cmd_ros.gait_type = 0;
         high_cmd_ros.speed_level = 0;
