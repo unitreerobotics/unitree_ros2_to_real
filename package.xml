@@ -8,6 +8,7 @@
     <buildtool_depend>rosidl_default_generators</buildtool_depend>
     <build_depend>rcl</build_depend>
     <build_depend>std_msgs</build_depend>
+    <build_depend>geometry_msgs</build_depend>
     <build_export_depend>roscpp</build_export_depend>
     <build_export_depend>std_msgs</build_export_depend>
     <exec_depend>rcl</exec_depend>
